@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Phone, MessageSquare, CheckCircle2, ArrowRight } from "lucide-react";
 import { Product, BUSINESS_INFO } from "../data";
@@ -10,6 +10,17 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onEnquire }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (product.images.length <= 1 || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % product.images.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [product.images.length, isHovered]);
 
   const nextSlide = (e: MouseEvent) => {
     e.stopPropagation();
@@ -32,6 +43,8 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group"
     >
       {/* Image Carousel Area */}
