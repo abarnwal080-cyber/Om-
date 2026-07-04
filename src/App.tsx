@@ -35,6 +35,8 @@ import {
 import ProductCard from "./components/ProductCard";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
+import AIChatbot from "./components/AIChatbot";
+import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -43,12 +45,14 @@ function DynamicIcon({ name, className }: { name: string; className?: string }) 
 }
 
 export default function App() {
+  const [lang, setLang] = useState<"en" | "hi">("en");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [prefilledProduct, setPrefilledProduct] = useState("");
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
 
   const inquiryRef = useRef<HTMLDivElement>(null);
+  const t = TRANSLATIONS[lang];
 
   const handleEnquire = (productName: string) => {
     setPrefilledProduct(productName);
@@ -134,22 +138,28 @@ export default function App() {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8 font-semibold text-sm text-blue-100">
-            <a href="#about" className="hover:text-orange-400 transition-colors">About Us</a>
-            <a href="#products" className="hover:text-orange-400 transition-colors">Products</a>
-            <a href="#special-uses" className="hover:text-orange-400 transition-colors">Applications</a>
-            <a href="#size-matrix" className="hover:text-orange-400 transition-colors">Size Chart</a>
-            <a href="#why-choose" className="hover:text-orange-400 transition-colors">Why Us</a>
-            <a href="#enquire" className="hover:text-orange-400 transition-colors">Inquiry</a>
-            <a href="#contact" className="hover:text-orange-400 transition-colors">Find Store</a>
+            <a href="#about" className="hover:text-orange-400 transition-colors">{t.navAbout}</a>
+            <a href="#products" className="hover:text-orange-400 transition-colors">{t.navProducts}</a>
+            <a href="#special-uses" className="hover:text-orange-400 transition-colors">{t.navApplications}</a>
+            <a href="#size-matrix" className="hover:text-orange-400 transition-colors">{t.navSizeChart}</a>
+            <a href="#why-choose" className="hover:text-orange-400 transition-colors">{t.navWhyUs}</a>
+            <a href="#enquire" className="hover:text-orange-400 transition-colors">{t.navInquiry}</a>
+            <a href="#contact" className="hover:text-orange-400 transition-colors">{t.navFindStore}</a>
           </nav>
 
           {/* Nav Right CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={() => setLang(lang === "en" ? "hi" : "en")}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold text-blue-100 hover:text-white hover:bg-white/15 transition-all cursor-pointer mr-1"
+            >
+              🌐 {lang === "en" ? "हिन्दी" : "English"}
+            </button>
             <a
               href="#enquire"
               className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center"
             >
-              Get Bulk Quote
+              {lang === "en" ? "Get Bulk Quote" : "थोक भाव पाएं"}
             </a>
           </div>
 
@@ -176,69 +186,83 @@ export default function App() {
                 <a 
                   href="#about" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  About Us
+                  {t.navAbout}
                 </a>
                 <a 
                   href="#products" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Products Catalog
+                  {t.navProducts}
                 </a>
                 <a 
                   href="#special-uses" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Special Purposes
+                  {t.navApplications}
                 </a>
                 <a 
                   href="#size-matrix" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Plastic Sizes Table
+                  {t.navSizeChart}
                 </a>
                 <a 
                   href="#why-choose" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Why Choose Us
+                  {t.navWhyUs}
                 </a>
                 <a 
                   href="#enquire" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Get Quotes
+                  {t.navInquiry}
                 </a>
                 <a 
                   href="#contact" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-brand-orange py-1"
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
-                  Contact Store Location
+                  {t.navFindStore}
                 </a>
+
+                {/* Mobile Language Toggle */}
+                <div className="py-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-slate-500">Language / भाषा</span>
+                  <button
+                    onClick={() => {
+                      setLang(lang === "en" ? "hi" : "en");
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
+                  >
+                    🌐 {lang === "en" ? "Switch to हिन्दी" : "Switch to English"}
+                  </button>
+                </div>
 
                 <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
                   <a
                     href={BUSINESS_INFO.phoneFormatted}
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-blue-dark text-white font-bold text-sm shadow"
+                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#001f3f] text-white font-bold text-sm shadow cursor-pointer"
                   >
-                    <Phone className="w-4 h-4 text-brand-orange" />
-                    Call Mr. Vinod Kumar
+                    <Phone className="w-4 h-4 text-orange-400" />
+                    {lang === "en" ? "Call Mr. Vinod Kumar" : "श्री विनोद कुमार को कॉल करें"}
                   </a>
                   <a
                     href={getWhatsAppGeneralLink()}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] text-white font-bold text-sm shadow"
+                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#25D366] text-white font-bold text-sm shadow cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4" />
-                    WhatsApp Chat
+                    {lang === "en" ? "WhatsApp Chat" : "व्हाट्सएप चैट करें"}
                   </a>
                 </div>
               </div>
@@ -263,7 +287,10 @@ export default function App() {
               
               {/* Trust Badges Bar */}
               <div className="flex flex-wrap gap-2.5 mb-6">
-                {["✓ Since 2000", "✓ Wholesale & Retail", "✓ Genuine Brands", "✓ Bulk Orders Accepted", "✓ Fast Delivery"].map((badge, idx) => (
+                {(lang === "en" 
+                  ? ["✓ Since 2000", "✓ Wholesale & Retail", "✓ Genuine Brands", "✓ Bulk Orders Accepted", "✓ Fast Delivery"]
+                  : ["✓ सन 2000 से", "✓ थोक एवं खुदरा भाव", "✓ असली ब्रांड्स", "✓ बल्क आर्डर स्वीकार", "✓ तीव्र डिलीवरी"]
+                ).map((badge, idx) => (
                   <span 
                     key={idx}
                     className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-white/5 border border-white/10 text-brand-orange px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm"
@@ -275,26 +302,38 @@ export default function App() {
 
               {/* Title Header */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.1] mb-6">
-                Trusted Tarpaulin & <br />
-                <span className="bg-gradient-to-r from-brand-orange to-amber-400 bg-clip-text text-transparent">
-                  Plastic Sheet Dealer
-                </span> <br className="hidden sm:inline" />
-                Since 2000
+                {lang === "en" ? (
+                  <>
+                    Trusted Tarpaulin & <br />
+                    <span className="bg-gradient-to-r from-brand-orange to-amber-400 bg-clip-text text-transparent">
+                      Plastic Sheet Dealer
+                    </span> <br className="hidden sm:inline" />
+                    Since 2000
+                  </>
+                ) : (
+                  <>
+                    भरोसेमंद तिरपाल और <br />
+                    <span className="bg-gradient-to-r from-brand-orange to-amber-400 bg-clip-text text-transparent">
+                      प्लास्टिक शीट डीलर
+                    </span> <br className="hidden sm:inline" />
+                    सन 2000 से
+                  </>
+                )}
               </h1>
 
               {/* Subheading */}
               <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
-                Serving Siwan and nearby districts with premium quality Tarpaulin, Plastic Rolls, Construction Sheets, Stretch Films and Agricultural Covers. Guaranteed lowest wholesale prices and ready-to-dispatch stocks.
+                {t.heroSubtitle}
               </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3.5 mb-12">
                 <a
                   href={BUSINESS_INFO.phoneFormatted}
-                  className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-orange-600/30 active:scale-95"
+                  className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-orange-600/30 active:scale-95 animate-pulse"
                 >
                   <Phone className="w-5 h-5" />
-                  Call Mr. Vinod Now
+                  {t.heroCtaCall}
                 </a>
                 <a
                   href={getWhatsAppGeneralLink()}
@@ -303,26 +342,26 @@ export default function App() {
                   className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-emerald-500/20 active:scale-95"
                 >
                   <MessageSquare className="w-5 h-5" />
-                  WhatsApp Price List
+                  {t.heroCtaWhatsApp}
                 </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/10">
                 <div>
                   <div className="text-3xl font-extrabold text-brand-orange font-display">26+</div>
-                  <div className="text-xs text-slate-400 mt-1">Years of Trust (Est. 2000)</div>
+                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
                 </div>
                 <div>
                   <div className="text-3xl font-extrabold text-brand-orange font-display">50+</div>
-                  <div className="text-xs text-slate-400 mt-1">Size Configurations</div>
+                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
                 </div>
                 <div>
                   <div className="text-3xl font-extrabold text-brand-orange font-display">100%</div>
-                  <div className="text-xs text-slate-400 mt-1">Waterproof & UV Tested</div>
+                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
                 </div>
                 <div>
                   <div className="text-3xl font-extrabold text-brand-orange font-display">10k+</div>
-                  <div className="text-xs text-slate-400 mt-1">Happy Farmers & Builders</div>
+                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
                 </div>
               </div>
 
@@ -1019,9 +1058,14 @@ export default function App() {
           </div>
 
           <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
-            <p>
-              © {new Date().getFullYear()} Om Shringar Tirpal Store (Formerly Goyal Traders). All rights reserved.
-            </p>
+            <div className="flex flex-col gap-1">
+              <p>
+                © {new Date().getFullYear()} Om Shringar Tirpal Store (Formerly Goyal Traders). All rights reserved.
+              </p>
+              <p className="text-slate-500 text-[11px]">
+                Developed by <span className="text-orange-500 font-semibold">Priyaranjan Raj</span>
+              </p>
+            </div>
             <div className="flex gap-4">
               <a href={BUSINESS_INFO.googleMapsUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                 Google Maps Find Us
@@ -1043,7 +1087,7 @@ export default function App() {
         <a
           href={BUSINESS_INFO.phoneFormatted}
           aria-label="Call Proprietor Mr. Vinod Kumar"
-          className="w-14 h-14 bg-brand-blue-dark text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-brand-blue-royal transition-all duration-300 hover:scale-110 border border-white/10"
+          className="w-14 h-14 bg-[#001f3f] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-brand-blue-royal transition-all duration-300 hover:scale-110 border border-white/10"
         >
           <Phone className="w-6 h-6 text-brand-orange" />
         </a>
@@ -1064,7 +1108,7 @@ export default function App() {
       <div className="sm:hidden fixed bottom-0 inset-x-0 h-16 bg-white border-t border-slate-200 shadow-2xl grid grid-cols-2 z-40 divide-x divide-slate-100">
         <a
           href={BUSINESS_INFO.phoneFormatted}
-          className="flex items-center justify-center gap-2 text-brand-blue-dark font-extrabold text-sm active:bg-slate-50 transition-colors"
+          className="flex items-center justify-center gap-2 text-[#001f3f] font-extrabold text-sm active:bg-slate-50 transition-colors"
         >
           <Phone className="w-4 h-4 text-brand-orange" />
           <span>Call Store</span>
@@ -1079,6 +1123,9 @@ export default function App() {
           <span>WhatsApp Chat</span>
         </a>
       </div>
+
+      {/* AI Assistant Chatbot (Floating Left Aligned) */}
+      <AIChatbot currentLanguage={lang} onLanguageChange={setLang} />
 
     </div>
   );
